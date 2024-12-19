@@ -8,12 +8,16 @@ def main():
 
     ticker = input("Введите тикер акции (например, «AAPL» для Apple Inc): »")
     period = input("Введите период для данных (например, '1mo' для одного месяца): ")
+    threshold = float(input("Введите порог колебания в процентах (например, 5 для 5%): "))
 
     # Получаем данные о запасах
     stock_data = dd.fetch_stock_data(ticker, period)
 
     # Добавляем скользящее среднее в данные
     stock_data = dd.add_moving_average(stock_data)
+
+    # Уведомляем о сильных колебаниях
+    dplt.notify_if_strong_fluctuations(stock_data, threshold)
 
     # Выводим среднюю цену за период
     dplt.calculate_and_display_average_price(stock_data)
