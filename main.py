@@ -25,6 +25,9 @@ def main():
     # Строим график и сохраняем его
     dplt.create_and_save_plot(stock_data, ticker, period)
 
+    # Экспортируем данные в CSV
+    dd.export_data_to_csv(stock_data, f"{ticker}_{period}_stock_data.csv")
+
 
 if __name__ == "__main__":
     main()
