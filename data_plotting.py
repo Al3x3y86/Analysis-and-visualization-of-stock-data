@@ -3,32 +3,39 @@ import pandas as pd
 
 
 def create_and_save_plot(data, ticker, period, filename=None):
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(12, 10))
 
-    if 'Date' not in data:
-        if pd.api.types.is_datetime64_any_dtype(data.index):
-            dates = data.index.to_numpy()
-            plt.plot(dates, data['Close'].values, label='Close Price')
-            plt.plot(dates, data['Moving_Average'].values, label='Moving Average')
-        else:
-            print("Информация о дате отсутствует или не имеет распознаваемого формата.")
-            return
-    else:
-        if not pd.api.types.is_datetime64_any_dtype(data['Date']):
-            data['Date'] = pd.to_datetime(data['Date'])
-        plt.plot(data['Date'], data['Close'], label='Close Price')
-        plt.plot(data['Date'], data['Moving_Average'], label='Moving Average')
+    if 'Date' not in data.columns:
+        data.reset_index(inplace=True)
 
-    plt.title(f"{ticker} Цена акций с течением времени")
-    plt.xlabel("Дата")
-    plt.ylabel("Цена")
+    # График цены и скользящей средней
+    plt.subplot(3, 1, 1)
+    plt.plot(data['Date'], data['Close'], label='Close Price')
+    plt.plot(data['Date'], data['Moving_Average'], label='Moving Average')
+    plt.title(f"{ticker} Stock Price & Moving Average")
     plt.legend()
 
-    if filename is None:
-        filename = f"{ticker}_{period}_stock_price_chart.png"
+    # График RSI
+    plt.subplot(3, 1, 2)
+    plt.plot(data['Date'], data['RSI'], label='RSI')
+    plt.axhline(70, linestyle='--', color='red')
+    plt.axhline(30, linestyle='--', color='green')
+    plt.title('RSI Indicator')
+    plt.legend()
 
-    plt.savefig(filename)
-    print(f"График сохранен как {filename}")
+    # График MACD
+    plt.subplot(3, 1, 3)
+    plt.plot(data['Date'], data['MACD'], label='MACD')
+    plt.plot(data['Date'], data['MACD_Signal'], label='MACD Signal')
+    plt.title('MACD Indicator')
+    plt.legend()
+
+    plt.tight_layout()
+    if filename:
+        plt.savefig(filename)
+        print(f"График сохранен как {filename}")
+    else:
+        plt.show()
 
 
 def calculate_and_display_average_price(data):
