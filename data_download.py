@@ -2,9 +2,16 @@ import yfinance as yf
 import numpy as np
 
 
-def fetch_stock_data(ticker, period='1mo'):
+def fetch_stock_data(ticker, period=None, start_date=None, end_date=None):
     stock = yf.Ticker(ticker)
-    data = stock.history(period=period)
+
+    # Если указаны конкретные даты, использовать их
+    if start_date and end_date:
+        data = stock.history(start=start_date, end=end_date)
+    else:
+        # Использовать стандартный период, если даты не указаны
+        data = stock.history(period=period)
+
     data.reset_index(inplace=True)
     return data
 
