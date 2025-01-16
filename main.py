@@ -6,8 +6,8 @@ def main():
     print("Вот несколько примеров биржевых тикеров, которые вы можете рассмотреть: AAPL (Apple Inc), GOOGL (Alphabet Inc), MSFT (Microsoft Corporation), AMZN (Amazon.com Inc), TSLA (Tesla Inc).")
     print("Общие периоды времени для данных о запасах включают: 1д, 5д, 1мес, 3мес, 6мес, 1г, 2г, 5г, 10л, с начала года, макс.")
 
-    ticker = input("Введите тикер акции (например, «AAPL» для Apple Inc): »")
-    use_custom_dates = input("Хотите указать начальную и конечную даты? (да/нет): ").strip().lower()
+    ticker = input("Введите тикер акции (например, 'AAPL' для Apple Inc): ")
+    use_custom_dates = input("Хотите указать начальную и конечную дату? (да/нет): ").strip().lower()
 
     if use_custom_dates == 'да':
         start_date = input("Введите дату начала в формате ГГГГ-ММ-ДД: ")
@@ -26,11 +26,14 @@ def main():
     dplt.notify_if_strong_fluctuations(stock_data, threshold)
     dplt.calculate_and_display_average_price(stock_data)
 
+    # Ввод стиля графика
+    style = input("Введите стиль графика (например, 'classic', 'ggplot', 'fivethirtyeight', или оставьте пустым для 'default'): ").strip() or "default"
+
     # Построение графика
     if use_custom_dates == 'да':
-        dplt.create_and_save_plot(stock_data, ticker, f"{start_date} to {end_date}")
+        dplt.create_and_save_plot(stock_data, ticker, f"{start_date} to {end_date}", style=style)
     else:
-        dplt.create_and_save_plot(stock_data, ticker, period)
+        dplt.create_and_save_plot(stock_data, ticker, period, style=style)
 
     # Экспорт данных в CSV
     if use_custom_dates == 'да':
