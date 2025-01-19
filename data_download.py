@@ -46,4 +46,18 @@ def export_data_to_csv(data, filename):
 def add_technical_indicators(data):
     data = calculate_rsi(data)
     data = calculate_macd(data)
+    data = calculate_standard_deviation(data)
+    return data
+
+
+def calculate_standard_deviation(data):
+    """
+    Вычисляет стандартное отклонение цены закрытия акций.
+    :param data: DataFrame с колонкой 'Close'.
+    :return: DataFrame с добавленной колонкой 'Standard_Deviation'.
+    """
+    if 'Close' in data:
+        data['Standard_Deviation'] = data['Close'].rolling(window=10).std()
+    else:
+        print("Колонка 'Close' отсутствует в данных.")
     return data

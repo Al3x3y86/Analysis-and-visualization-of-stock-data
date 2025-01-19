@@ -3,8 +3,8 @@ import pandas as pd
 
 
 def create_and_save_plot(data, ticker, period, filename=None, style="default"):
-    plt.style.use(style)  # Применение выбранного стиля
-    plt.figure(figsize=(12, 10))
+    plt.style.use(style)
+    plt.figure(figsize=(12, 12))
 
     if 'Date' not in data.columns:
         data.reset_index(inplace=True)
@@ -29,6 +29,12 @@ def create_and_save_plot(data, ticker, period, filename=None, style="default"):
     plt.plot(data['Date'], data['MACD'], label='MACD')
     plt.plot(data['Date'], data['MACD_Signal'], label='MACD Signal')
     plt.title('MACD Indicator')
+    plt.legend()
+
+    # График стандартного отклонения
+    plt.subplot(4, 1, 4)
+    plt.plot(data['Date'], data['Standard_Deviation'], label='Standard Deviation', color='purple')
+    plt.title('Standard Deviation of Closing Price')
     plt.legend()
 
     plt.tight_layout()
