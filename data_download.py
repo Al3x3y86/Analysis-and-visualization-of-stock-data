@@ -1,5 +1,4 @@
 import yfinance as yf
-import numpy as np
 
 
 def fetch_stock_data(ticker, period=None, start_date=None, end_date=None):
